@@ -4,10 +4,24 @@
 
 1. В Yandex Cloud создайте новый инстанс (4CPU4RAM) на основе образа `jetbrains/teamcity-server`.
 2. Дождитесь запуска teamcity, выполните первоначальную настройку.
+
+![изображение](https://github.com/stepynin-georgy/hw_ci_4/blob/main/img/Screenshot_44.png)
+
+![изображение](https://github.com/stepynin-georgy/hw_ci_4/blob/main/img/Screenshot_45.png)
+
 3. Создайте ещё один инстанс (2CPU4RAM) на основе образа `jetbrains/teamcity-agent`. Пропишите к нему переменную окружения `SERVER_URL: "http://<teamcity_url>:8111"`.
 4. Авторизуйте агент.
+
+![изображение](https://github.com/stepynin-georgy/hw_ci_4/blob/main/img/Screenshot_47.png)
+
 5. Сделайте fork [репозитория](https://github.com/aragastmatb/example-teamcity).
+
+[Fork репозитория](https://github.com/stepynin-georgy/example-teamcity)
+
 6. Создайте VM (2CPU4RAM) и запустите [playbook](./infrastructure).
+
+<details>
+<summary>Запуск playbook</summary>
 
 ```
 (venv_ci) root@ansible-ubuntu:/opt/hw_ci_4# ansible-playbook -i infrastructure/inventory/cicd/hosts.yml infrastructure/site.yml
@@ -94,22 +108,66 @@ nexus-01                   : ok=17   changed=15   unreachable=0    failed=0    s
 
 ```
 
+</details>
+
 ## Основная часть
 
 1. Создайте новый проект в teamcity на основе fork.
+
+![изображение](https://github.com/stepynin-georgy/hw_ci_4/blob/main/img/Screenshot_46.png)
+
+![изображение](https://github.com/stepynin-georgy/hw_ci_4/blob/main/img/Screenshot_48.png)
+
 2. Сделайте autodetect конфигурации.
+
+![изображение](https://github.com/stepynin-georgy/hw_ci_4/blob/main/img/Screenshot_51.png)
+
 3. Сохраните необходимые шаги, запустите первую сборку master.
+
+![изображение](https://github.com/stepynin-georgy/hw_ci_4/blob/main/img/Screenshot_52.png)
+
 4. Поменяйте условия сборки: если сборка по ветке `master`, то должен происходит `mvn clean deploy`, иначе `mvn clean test`.
+
+![изображение](https://github.com/stepynin-georgy/hw_ci_4/blob/main/img/Screenshot_51.png)
+
 5. Для deploy будет необходимо загрузить [settings.xml](./teamcity/settings.xml) в набор конфигураций maven у teamcity, предварительно записав туда креды для подключения к nexus.
+
+clean deploy ```teamcity.build.branch contains master```
+
+clean test ```teamcity.build.branch does not contain master```
+
+![изображение](https://github.com/stepynin-georgy/hw_ci_4/blob/main/img/Screenshot_53.png)
+
 6. В pom.xml необходимо поменять ссылки на репозиторий и nexus.
+
+[pom.xml](https://github.com/stepynin-georgy/example-teamcity/blob/master/pom.xml)
+
 7. Запустите сборку по master, убедитесь, что всё прошло успешно и артефакт появился в nexus.
+
+![изображение](https://github.com/stepynin-georgy/hw_ci_4/blob/main/img/Screenshot_55.png)
+
+![изображение](https://github.com/stepynin-georgy/hw_ci_4/blob/main/img/Screenshot_56.png)
+
 8. Мигрируйте `build configuration` в репозиторий.
+
+![изображение](https://github.com/stepynin-georgy/hw_ci_4/blob/main/img/Screenshot_57.png)
 
 ``` TeamCity change in 'netology' project: Versioned settings configuration updated, collecting changed files... ```
 
 9. Создайте отдельную ветку `feature/add_reply` в репозитории.
+
+![изображение](https://github.com/stepynin-georgy/hw_ci_4/blob/main/img/Screenshot_59.png)
+
 10. Напишите новый метод для класса Welcomer: метод должен возвращать произвольную реплику, содержащую слово `hunter`.
+
+[HelloPlayer.java](https://github.com/stepynin-georgy/example-teamcity/blob/master/src/main/java/plaindoll/HelloPlayer.java)
+
+[Welcomer.java](https://github.com/stepynin-georgy/example-teamcity/blob/master/src/main/java/plaindoll/Welcomer.java)
+
 11. Дополните тест для нового метода на поиск слова `hunter` в новой реплике.
+
+[WelcomerTest.java](https://github.com/stepynin-georgy/example-teamcity/blob/master/src/test/java/plaindoll/WelcomerTest.java)
+
 12. Сделайте push всех изменений в новую ветку репозитория.
 13. Убедитесь, что сборка самостоятельно запустилась, тесты прошли успешно.
 
@@ -203,11 +261,24 @@ nexus-01                   : ok=17   changed=15   unreachable=0    failed=0    s
 ```
 
 14. Внесите изменения из произвольной ветки `feature/add_reply` в `master` через `Merge`.
-15. Убедитесь, что нет собранного артефакта в сборке по ветке `master`.
-16. Настройте конфигурацию так, чтобы она собирала `.jar` в артефакты сборки.
-17. Проведите повторную сборку мастера, убедитесь, что сбора прошла успешно и артефакты собраны.
-18. Проверьте, что конфигурация в репозитории содержит все настройки конфигурации из teamcity.
-19. В ответе пришлите ссылку на репозиторий.
+
+![изображение](https://github.com/stepynin-georgy/hw_ci_4/blob/main/img/Screenshot_64.png)
+
+16. Убедитесь, что нет собранного артефакта в сборке по ветке `master`.
+17. Настройте конфигурацию так, чтобы она собирала `.jar` в артефакты сборки.
+
+![изображение](https://github.com/stepynin-georgy/hw_ci_4/blob/main/img/Screenshot_65.png)
+
+18. Проведите повторную сборку мастера, убедитесь, что сбора прошла успешно и артефакты собраны.
+
+![изображение](https://github.com/stepynin-georgy/hw_ci_4/blob/main/img/Screenshot_66.png)
+
+![изображение](https://github.com/stepynin-georgy/hw_ci_4/blob/main/img/Screenshot_67.png)
+
+![изображение](https://github.com/stepynin-georgy/hw_ci_4/blob/main/img/Screenshot_68.png)
+
+19. Проверьте, что конфигурация в репозитории содержит все настройки конфигурации из teamcity.
+20. В ответе пришлите ссылку на репозиторий.
 
 (Репозиторий)[https://github.com/stepynin-georgy/example-teamcity]
 
