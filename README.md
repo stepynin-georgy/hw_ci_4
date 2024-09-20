@@ -16,7 +16,7 @@
 
 5. Сделайте fork [репозитория](https://github.com/aragastmatb/example-teamcity).
 
-[Fork репозитория](https://github.com/stepynin-georgy/example-teamcity)
+   [Fork репозитория](https://github.com/stepynin-georgy/example-teamcity)
 
 6. Создайте VM (2CPU4RAM) и запустите [playbook](./infrastructure).
 
@@ -280,7 +280,7 @@ clean test ```teamcity.build.branch does not contain master```
 19. Проверьте, что конфигурация в репозитории содержит все настройки конфигурации из teamcity.
 20. В ответе пришлите ссылку на репозиторий.
 
-(Репозиторий)[https://github.com/stepynin-georgy/example-teamcity]
+[Репозиторий](https://github.com/stepynin-georgy/example-teamcity)
 
 ---
 
